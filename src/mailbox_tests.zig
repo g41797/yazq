@@ -234,8 +234,8 @@ test "Echo TypeErased mailboxes test" {
     const Echo = struct {
         const Self = @This();
 
-        to: Mailbox = .init(io),
-        from: Mailbox = .init(io),
+        to: Mailbox = .init(null),
+        from: Mailbox = .init(null),
         thread: Thread = undefined,
 
         pub fn start(self: *Self) void {

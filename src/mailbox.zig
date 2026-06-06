@@ -25,9 +25,9 @@ pub fn MailBox(comptime Letter: type) type {
         io: ?Io = null, // "managed"
 
         /// Initialize mailbox with Io backend
-        pub fn init(io: Io) Self {
+        pub fn init(io: ?Io) Self {
             return .{
-                .io = io,
+                .io = if (io == null) std.Io.Threaded.global_single_threaded.*.io() else io.?,
                 .closed = std.atomic.Value(bool).init(false),
             };
         }
@@ -247,9 +247,10 @@ pub fn MailBoxIntrusive(comptime Envelope: type) type {
         cond: Io.Condition = .init,
         io: ?Io = null,
 
-        pub fn init(io: Io) Self {
+        /// Initialize mailbox with Io backend
+        pub fn init(io: ?Io) Self {
             return .{
-                .io = io,
+                .io = if (io == null) std.Io.Threaded.global_single_threaded.*.io() else io.?,
                 .closed = std.atomic.Value(bool).init(false),
             };
         }
@@ -455,9 +456,10 @@ pub const TypeErasedMailbox = struct {
     cond: Io.Condition = .init,
     io: ?Io = null,
 
-    pub fn init(io: Io) Self {
+    /// Initialize mailbox with Io backend
+    pub fn init(io: ?Io) Self {
         return .{
-            .io = io,
+            .io = if (io == null) std.Io.Threaded.global_single_threaded.*.io() else io.?,
             .closed = std.atomic.Value(bool).init(false),
         };
     }

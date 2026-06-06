@@ -162,6 +162,7 @@ In fact Mailbox is a queue(FIFO) of Envelope(s).
 ## APIs
 
 MailBox supports following operations:
+- **init** - store Io required for internal synchronization primitives, may be _null_
 - **send** *Envelope* to MailBox (*enqueue*) and wakeup waiting receiver(s)
 - **receive** *Envelope* from Mailbox (*dequeue*) with time-out
 - **interrupt** - wake-up receiver thread
@@ -220,7 +221,7 @@ Example:
         node: Node = .{},
     };
 
-    var mbox: Mbx = .init(io);
+    var mbox: Mbx = .init(null); // used std.Io.Threaded.global_single_threaded.*.io()
 
     var msg: Msg = .{
         .value = 1,
